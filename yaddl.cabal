@@ -1,0 +1,88 @@
+cabal-version: 1.12
+
+-- This file has been generated from package.yaml by hpack version 0.33.0.
+--
+-- see: https://github.com/sol/hpack
+--
+-- hash: 01c91f2e36bc64d8104da434dcab36512837ce407966e1ee43f1a0cbedc6ed30
+
+name:           yaddl
+version:        0.1.0.0
+description:    Please see the README on GitHub at <https://github.com/evuez/yaddl#readme>
+homepage:       https://github.com/evuez/yaddl#readme
+bug-reports:    https://github.com/evuez/yaddl/issues
+author:         evuez
+maintainer:     helloevuez@gmail.com
+copyright:      2021 evuez
+license:        BSD3
+license-file:   LICENSE
+build-type:     Simple
+extra-source-files:
+    README.md
+    ChangeLog.md
+
+source-repository head
+  type: git
+  location: https://github.com/evuez/yaddl
+
+library
+  exposed-modules:
+      Lib
+      Parser
+      Types
+      Writer.Dot
+  other-modules:
+      Paths_yaddl
+  hs-source-dirs:
+      src
+  build-depends:
+      aeson
+    , base >=4.7 && <5
+    , bytestring
+    , containers
+    , dotgen
+    , filepath
+    , megaparsec
+    , parser-combinators
+  default-language: Haskell2010
+
+executable yaddl
+  main-is: Main.hs
+  other-modules:
+      Paths_yaddl
+  hs-source-dirs:
+      app
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      aeson
+    , base >=4.7 && <5
+    , bytestring
+    , containers
+    , dotgen
+    , filepath
+    , megaparsec
+    , parser-combinators
+    , yaddl
+  default-language: Haskell2010
+
+test-suite yaddl-test
+  type: exitcode-stdio-1.0
+  main-is: Spec.hs
+  other-modules:
+      Paths_yaddl
+  hs-source-dirs:
+      test
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      aeson
+    , base >=4.7 && <5
+    , bytestring
+    , containers
+    , dotgen
+    , filepath
+    , hspec
+    , hspec-megaparsec
+    , megaparsec
+    , parser-combinators
+    , yaddl
+  default-language: Haskell2010
