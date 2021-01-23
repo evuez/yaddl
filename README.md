@@ -100,6 +100,10 @@ digraph G {
 }
 ```
 
+Output of `dot -Tpng node.dot > node.png`:
+
+![node](examples/node.png)
+
 ### Defining an edge
 
 You can define undirected, bidirected and directed edges:
@@ -160,6 +164,10 @@ digraph G {
   n2 -> n1[dir="both",style="bold"];
 }
 ```
+
+And output of `dot -Tpng example.dot > example.png`:
+
+![example](examples/example.png)
 
 ## Install
 
