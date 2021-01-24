@@ -110,8 +110,8 @@ You can define undirected, bidirected and directed edges:
 
  - `-- a b`: Undirected edge
  - `<> a b`: Bidirected edge
- - `-> a b`: Directed edge, right to left
- - `<- a b`: Directed edge, left to right
+ - `-> a b`: Directed edge, left to right
+ - `<- a b`: Directed edge, right to left
 
 Where `a` and `b` are node names. If a node name contains spaces, use `[node name]`.
 
