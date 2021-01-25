@@ -32,7 +32,7 @@ You can then use additional annotations to further describe the node:
  - `/`: A pair of values, space-separated. This means the first value should not contain any space. Output is a `[a, b]` list in `JSON` and `a | b` in `DOT`.
  - `'`: A string.
 
-`#` is only allowed one per node. Multiple `/` will result in a list of pairs. Multiple `'` will result in a multi-line string. Interleaving `/` or `'` with other annotations is not permitted:
+`#` is only allowed once per node. Multiple `/` will result in a list of pairs. Multiple `'` will result in a multi-line string. Interleaving `/` or `'` with other annotations is not permitted:
 
 ```
 # quux, quuz
