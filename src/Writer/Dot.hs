@@ -5,38 +5,34 @@ module Writer.Dot
   ( mkDot
   ) where
 
-import Data.List (intercalate)
+import Data.List (intercalate, maximumBy, transpose)
 import Data.Maybe (catMaybes)
-import Data.Tuple (swap)
+import Data.Ord (comparing)
 import Text.Dot (Dot, NodeId, attribute, edge, node)
-import Types (Block(..), Direction(..), Document(..), IsEdge, IsNode)
+import Types (Columns, Direction(..), Document(..), IsEdge, IsNode)
+import qualified Types as T (Block(..))
 
 mkDot :: Document -> Dot ()
 mkDot (Document nodes edges) = do
   attribute ("rankdir", "LR")
-  nodes' <- map2M name dNode nodes
+  nodes' <- map2M T.label dNode nodes
   case mapM (dEdge nodes') edges of
     Just xs -> sequence_ xs
     Nothing -> pure ()
 
-dNode :: Block IsNode -> Dot NodeId
-dNode Node {name = name', tags = tags', comment = comment', links = links'} =
+dNode :: T.Block IsNode -> Dot NodeId
+dNode T.Node {T.label = label', T.comment = comment', T.rows = rows'} =
   node
-    [ ("shape", "Mrecord")
-    , ( "label"
-      , col
-          [ name'
-          , intercalate ", " tags'
-          , maybeToString comment'
-          , row $ map (liftFst maybeToString . swap) links'
-          ])
+    [ fontAttr
+    , ("shape", "Mrecord")
+    , ("label", col [label', maybeToString comment', rows rows'])
     ]
 
-dEdge :: [(String, NodeId)] -> Block IsEdge -> Maybe (Dot ())
-dEdge nodes (Edge direction x y comment') = do
+dEdge :: [(String, NodeId)] -> T.Block IsEdge -> Maybe (Dot ())
+dEdge nodes (T.Edge direction x y comment') = do
   n1 <- lookup x nodes
   n2 <- lookup y nodes
-  pure $ edge n1 n2 attrs
+  pure $ edge n1 n2 (fontAttr : attrs)
   where
     attrs =
       catMaybes
@@ -50,14 +46,15 @@ dEdge nodes (Edge direction x y comment') = do
 col :: [String] -> String
 col xs = intercalate "|" (filter (not . null) xs)
 
-row :: [(String, String)] -> String
-row xs =
-  if null' left || null' right
-    then unlines (map (\(x, y) -> mconcat [x, y]) xs)
-    else concat ["{", unlines left, "|", unlines right, "}"]
+rows :: [Columns] -> String
+rows xs =
+  intercalate "|" $ map (\ys -> concat ["{", intercalate "|" ys, "}"]) padded
   where
-    null' = not . (not . all null)
-    (left, right) = unzip xs
+    longests = length . maximumBy (comparing length) <$> transpose xs
+    padded = zipWith padR longests <$> xs
+
+fontAttr :: (String, String)
+fontAttr = ("fontname", "monospace")
 
 maybeToString :: Maybe String -> String
 maybeToString (Just s) = s
@@ -70,5 +67,7 @@ map2M f g (x:xs) = do
   rs <- map2M f g xs
   pure ((f x, y) : rs)
 
-liftFst :: (a -> b) -> (a, c) -> (b, c)
-liftFst f (a, c) = (f a, c)
+padR :: Int -> String -> String
+padR n s
+  | length s < n = s ++ replicate (n - length s) ' '
+  | otherwise = s

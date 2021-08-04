@@ -43,9 +43,9 @@ validEdges nodes edges = mconcat <$> mapM (validEdge nodes) edges
 validEdge :: [Block IsNode] -> Block IsEdge -> Either Error ()
 validEdge xs x@(Edge _ a b _) = mconcat <$> sequence [exists a, exists b]
   where
-    names = map name xs
+    labels = map label xs
     exists n =
-      if n `elem` names
+      if n `elem` labels
         then Right ()
         else Left ("In edge " ++ show x ++ ": " ++ n ++ " does not exist")
 

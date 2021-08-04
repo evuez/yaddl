@@ -29,7 +29,7 @@ A `=` followed by a space and the name of the node.
 You can then use additional annotations to further describe the node:
 
  - `#`: A list of comma-separated values, output is a comma-separated string in `DOT` and a list of strings in `JSON`.
- - `/`: A pair of values, space-separated. This means the first value should not contain any space. Output is a `[a, b]` list in `JSON` and `a | b` in `DOT`.
+ - `/`: A pair of values, with the second value being optional, space-separated. This means the first value should not contain any space. Output is a `[a, b]` list in `JSON` and `a | b` in `DOT`.
  - `'`: A string.
 
 `#` is only allowed one per node. Multiple `/` will result in a list of pairs. Multiple `'` will result in a multi-line string. Interleaving `/` or `'` with other annotations is not permitted:
