@@ -9,7 +9,7 @@ import Data.List (intercalate, maximumBy, transpose)
 import Data.Maybe (catMaybes)
 import Data.Ord (comparing)
 import Text.Dot (Dot, NodeId, attribute, edge, node)
-import Types (Columns, Direction(..), Document(..), IsEdge, IsNode)
+import Types (Cells, Direction(..), Document(..), IsEdge, IsNode)
 import qualified Types as T (Block(..))
 
 mkDot :: Document -> Dot ()
@@ -46,7 +46,7 @@ dEdge nodes (T.Edge direction x y comment') = do
 col :: [String] -> String
 col xs = intercalate "|" (filter (not . null) xs)
 
-rows :: [Columns] -> String
+rows :: [Cells] -> String
 rows xs =
   intercalate "|" $ map (\ys -> concat ["{", intercalate "|" ys, "}"]) padded
   where

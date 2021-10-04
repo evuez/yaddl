@@ -15,9 +15,9 @@ import Types (Block(..), Document(..), Error, IsEdge, IsNode)
 
 mkDocument :: String -> Either Error Document
 mkDocument s = do
-  document <- first errorBundlePretty (parser s)
-  void $ semCheck document
-  pure document
+  (_, document) <- first errorBundlePretty (parser s)
+  void $ semCheck (head document)
+  pure (head document)
 
 --
 -- Semantic checks

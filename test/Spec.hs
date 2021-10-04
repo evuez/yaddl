@@ -11,22 +11,35 @@ main =
     describe "nodes parser" $ do
       it "parses a well-formed node" $
         parser
-          "= Node name\n\
-          \' Comment\n\
-          \| a b\n\
-          \| b a\n\n" `shouldParse`
-        (Document
-           [Node "Node name" (Just "Comment") [["a", "b"], ["b", "a"]]]
-           [])
-      it "parses a well-formed node 2" $
-        parser
-          "= Node name\n\
-          \' Comment\n\
-          \| a b\n\
-          \| b a\n\n\
-          \= Node2\n\n\
-          \-- Node Node2\n\
-          \' label\n" `shouldParse`
-        (Document
-           [Node "Node name" (Just "Comment") [["a", "b"], ["b", "a"]]]
-           [])
+          --": cluster\n\
+          ": cluster\n\
+          \  = Node name\n\
+          \  ' Comment\n\
+          \  | a b\n\
+          \  | [b c] a\n\
+          \\
+          \  = Bar\n\
+          \  ' Comment\n\
+          \  | a b\n\
+          \  | [b c] a\n\
+          \\
+          \  -- [Node name] Bar\n\
+          \\
+          \: cluster2\n\
+          \  = Node nae\n\
+          \  ' Comment\n\
+          \  | a b\n\
+          \  | [b c] a\n\
+          \\
+          \  = Br\n\
+          \  ' Comment\n\
+          \  | a b\n\
+          \  | [b c] a\n\
+          \\
+          \ " `shouldParse`
+        ( ""
+        , [ Document
+              [Node "Node name" (Just "Comment") [["a", "b"], ["b", "a"]]]
+              []
+          ])
+
