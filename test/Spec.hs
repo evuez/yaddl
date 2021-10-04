@@ -28,18 +28,18 @@ main =
               ]
           ]
           []
-      it "parses a well-formed node with no links" $
+      it "parses a well-formed node with no link" $
         parser
           "= Node name\n\
           \# Tag 1, Tag 2\n\
           \' Comment\n" `shouldParse`
         Document [Node "Node name" (Just "Comment") ["Tag 1", "Tag 2"] []] []
-      it "parses a well-formed node with no links and no tags" $
+      it "parses a well-formed node with no link and no tag" $
         parser
           "= Node name\n\
           \' Comment\n" `shouldParse`
         Document [Node "Node name" (Just "Comment") [] []] []
-      it "parses a well-formed node with no links, no tags and no comment" $
+      it "parses a well-formed node with no link, no tag and no comment" $
         parser "= Node name\n" `shouldParse`
         Document [Node "Node name" Nothing [] []] []
       it "parses a well-formed node with a multiline comment" $
